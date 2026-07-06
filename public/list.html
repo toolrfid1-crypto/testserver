@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>รายการข้อมูล</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        body {
+            background: #f5f6fa;
+            padding: 40px;
+        }
+
+        .container {
+
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, .1);
+
+        }
+
+        h1 {
+
+            margin-bottom: 25px;
+            color: #333;
+
+        }
+
+        table {
+
+            width: 100%;
+            border-collapse: collapse;
+
+        }
+
+        th {
+
+            background: #007bff;
+            color: white;
+            padding: 12px;
+
+        }
+
+        td {
+
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+
+        }
+
+        tr:hover {
+
+            background: #f2f2f2;
+
+        }
+
+        .center {
+
+            text-align: center;
+
+        }
+
+        button {
+
+            padding: 8px 16px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 20px;
+
+        }
+
+        button:hover {
+
+            background: #218838;
+
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>📋 รายการข้อมูล</h1>
+
+        <button onclick="loadData()">
+            รีเฟรชข้อมูล
+        </button>
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>#</th>
+                    <th>ชื่อ</th>
+                    <th>อายุ</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="tbody">
+
+            </tbody>
+
+        </table>
+
+        <a href="/">➕ เพิ่มข้อมูล</a>
+
+    </div>
+
+    <script>
+
+        async function loadData() {
+
+            const res = await fetch("../data.json");
+
+            const data = await res.json();
+
+            const tbody = document.getElementById("tbody");
+
+            tbody.innerHTML = "";
+
+            if (data.length === 0) {
+
+                tbody.innerHTML = `
+        <tr>
+            <td colspan="3" class="center">
+                ไม่มีข้อมูล
+            </td>
+        </tr>`;
+
+                return;
+
+            }
+
+            data.forEach((item, index) => {
+
+                tbody.innerHTML += `
+        <tr>
+            <td>${index + 1}</td>
+            <td>${item.name}</td>
+            <td>${item.age}</td>
+        </tr>
+        `;
+
+            });
+
+        }
+
+        loadData();
+
+    </script>
+
+</body>
+
+</html>

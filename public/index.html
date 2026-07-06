@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>บันทึกข้อมูล</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 400px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #555;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: .3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, .25);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        button:active {
+            transform: scale(.98);
+        }
+
+        #message {
+            margin-top: 18px;
+            text-align: center;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h2>📝 บันทึกข้อมูล</h2>
+
+        <form id="myForm">
+
+            <div class="form-group">
+                <label>ชื่อ</label>
+                <input type="text" id="name" placeholder="กรอกชื่อ" required>
+            </div>
+
+            <div class="form-group">
+                <label>อายุ</label>
+                <input type="number" id="age" placeholder="กรอกอายุ" required>
+            </div>
+
+            <button type="submit">
+                💾 บันทึกข้อมูล
+            </button>
+
+        </form>
+
+        <div id="message"></div>
+        <a href="/list.html">📋 ดูรายการข้อมูล</a>
+
+    </div>
+
+    <script>
+
+        const form = document.getElementById("myForm");
+        const msg = document.getElementById("message");
+
+        form.addEventListener("submit", async (e) => {
+
+            e.preventDefault();
+
+            const data = {
+                name: document.getElementById("name").value,
+                age: document.getElementById("age").value
+            };
+
+            try {
+
+                const res = await fetch("/submit", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await res.json();
+
+                msg.innerHTML = "✅ " + result.message;
+
+                form.reset();
+
+            }
+            catch (err) {
+
+                msg.style.color = "red";
+                msg.innerHTML = "❌ ไม่สามารถเชื่อมต่อ Server ได้";
+
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>
