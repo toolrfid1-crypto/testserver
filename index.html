@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>ระบบพนักงาน</title>
+</head>
+
+<body>
+
+<h2>เพิ่มพนักงาน</h2>
+
+<input id="name" placeholder="ชื่อพนักงาน">
+<input id="department" placeholder="แผนก">
+
+<button onclick="saveEmployee()">บันทึก</button>
+
+<h3>รายชื่อพนักงาน</h3>
+
+<ul id="list"></ul>
+
+<script>
+async function loadEmployee() {
+    const res = await fetch("/employees");
+    const data = await res.json();
+
+    const list = document.getElementById("list");
+    list.innerHTML = "";
+
+    data.forEach(emp => {
+        list.innerHTML += `<li>${emp.name} (${emp.department})</li>`;
+    });
+}
+
+async function saveEmployee() {
+
+    const name = document.getElementById("name").value;
+    const department = document.getElementById("department").value;
+
+    await fetch("/employees",{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+            name,
+            department
+        })
+    });
+
+    document.getElementById("name").value="";
+    document.getElementById("department").value="";
+
+    loadEmployee();
+}
+
+loadEmployee();
+</script>
+
+</body>
+</html>
